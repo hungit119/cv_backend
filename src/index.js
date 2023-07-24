@@ -9,6 +9,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors());
 db.connect();
+db.configCloudinary();
 router(app);
 
 app.listen(PORT, () => {
