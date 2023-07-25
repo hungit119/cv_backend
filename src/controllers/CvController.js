@@ -32,5 +32,27 @@ class CvController {
       });
     }
   }
+  async getAllByUserId(req, res) {
+    try {
+      const { sid } = req.query;
+      await Cv.find({ userId: sid })
+        .then((response) => {
+          res.json({
+            success: true,
+            message: "Get all cv by user sid",
+            cvs: response,
+          });
+        })
+        .catch((error) => {
+          res.status(400).json({
+            message: error.message,
+          });
+        });
+    } catch (error) {
+      res.status(400).json({
+        message: error.message,
+      });
+    }
+  }
 }
 module.exports = new CvController();
