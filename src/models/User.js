@@ -12,7 +12,7 @@ const Users = new Schema(
     fisrtname: { type: String },
     lastname: { type: String },
     address: { type: String },
-    dob: { type: Date },
+    dob: { type: String },
   },
   { timestamps: true }
 );

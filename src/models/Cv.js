@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const Cv = new Schema(
   {
     sid: { type: String, unique: true, required: true },
+    userId: { type: String, required: true },
     userInfo: {
       address: { type: String },
       avatar: { type: String },
