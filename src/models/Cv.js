@@ -15,6 +15,7 @@ const Cv = new Schema(
       phoneNumber: { type: String },
     },
     cvInfo: {
+      color: { type: String },
       positionJob: { type: String },
       academicLevel: Schema.Types.Mixed,
       activities: [Schema.Types.Mixed],

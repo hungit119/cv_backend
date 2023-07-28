@@ -6,4 +6,5 @@ Route.post("/login", authController.login);
 Route.post("/register", authController.register);
 Route.get("/loadUser", verifyToken, authController.loadUser);
 Route.post("/google-login", authController.googleLogin);
+Route.post("/forgot-password", authController.forgotPassword);
 module.exports = Route;
