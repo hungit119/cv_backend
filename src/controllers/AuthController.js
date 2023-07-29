@@ -194,55 +194,59 @@ class AuthController {
       await User.findOne({ email })
         .then(async (response) => {
           try {
-            const newPassword = "123456";
+            var newPassword = Math.random().toString(36).slice(-8);
             const newHashPassword = await argon2.hash(newPassword);
-            await User.updateOne({ sid }, { password: newHashPassword }).then(
-              (response) => {
-                var transporter = nodemailer.createTransport({
-                  // config mail server
-                  host: "smtp.gmail.com",
-                  port: 465,
-                  secure: true,
-                  auth: {
-                    user: "hung1522665@gmail.com", //Tài khoản gmail vừa tạo
-                    pass: "vvurodqhaoerplca", //Mật khẩu tài khoản gmail vừa tạo
-                  },
-                  tls: {
-                    // do not fail on invalid certs
-                    rejectUnauthorized: false,
-                  },
-                });
-                var content = "";
-                content += `
+            await User.updateOne(
+              { sid: response.sid },
+              { password: newHashPassword }
+            ).then((response) => {
+              var transporter = nodemailer.createTransport({
+                // config mail server
+                host: "smtp.gmail.com",
+                port: 465,
+                secure: true,
+                auth: {
+                  user: "hung1522665@gmail.com", //Tài khoản gmail vừa tạo
+                  pass: "vvurodqhaoerplca", //Mật khẩu tài khoản gmail vừa tạo
+                },
+                tls: {
+                  // do not fail on invalid certs
+                  rejectUnauthorized: false,
+                },
+              });
+              var content = "";
+              content += `
                 <div style="padding: 10px; background-color: #003375">
                     <div style="padding: 10px; background-color: white;">
-                        <h4 style="color: #0085ff">Gửi mail với nodemailer và express</h4>
+                        <div><img src="https://jumbo.g-axon.work/images/logo.png" alt="" class="logo"></div>
+                        <h4 style="color: #0085ff">Password mới của bạn là:</h4>
                         <span style="color: black">${newPassword}</span>
                     </div>
                 </div>
             `;
-                var mainOptions = {
-                  // thiết lập đối tượng, nội dung gửi mail
-                  from: "NQH-Test nodemailer",
-                  to: email,
-                  subject: "Test Nodemailer",
-                  text: "Your text is here", //Thường thi mình không dùng cái này thay vào đó mình sử dụng html để dễ edit hơn
-                  html: content, //Nội dung html mình đã tạo trên kia :))
-                };
-                transporter.sendMail(mainOptions, function (err, info) {
-                  if (err) {
-                    res.json({
-                      success: true,
-                      message: "Sented email",
-                    });
-                  } else {
-                    res.status(400).json({
-                      message: error.message,
-                    });
-                  }
-                });
-              }
-            );
+              var mainOptions = {
+                // thiết lập đối tượng, nội dung gửi mail
+                from: "NQH-Test nodemailer",
+                to: email,
+                subject: "Thư cấp lại mật khẩu Jumbo",
+                text: "Mật khẩu được cấp lại", //Thường thi mình không dùng cái này thay vào đó mình sử dụng html để dễ edit hơn
+                html: content, //Nội dung html mình đã tạo trên kia :))
+              };
+              transporter.sendMail(mainOptions, function (err, info) {
+                if (err) {
+                  res.json({
+                    success: false,
+                    message: err,
+                  });
+                } else {
+                  res.json({
+                    success: true,
+                    message: "Email sent to" + email,
+                    info,
+                  });
+                }
+              });
+            });
           } catch (error) {
             res.status(400).json({
               message: error.message,
