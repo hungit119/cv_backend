@@ -7,4 +7,5 @@ Route.post("/register", authController.register);
 Route.get("/loadUser", verifyToken, authController.loadUser);
 Route.post("/google-login", authController.googleLogin);
 Route.post("/forgot-password", authController.forgotPassword);
+Route.post("/capchaCheck", authController.capchaCheck);
 module.exports = Route;

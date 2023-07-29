@@ -264,5 +264,11 @@ class AuthController {
       });
     }
   }
+  async capchaCheck(req, res) {
+    res.json({
+      success: true,
+      message: "Human 👨 👩",
+    });
+  }
 }
 module.exports = new AuthController();
